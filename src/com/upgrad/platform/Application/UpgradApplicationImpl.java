@@ -5,12 +5,19 @@ import com.upgrad.platform.dto.Answers;
 import com.upgrad.platform.dto.Questions;
 import com.upgrad.platform.dto.User;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class UpgradApplicationImpl implements UpgradApplication {
+    private static UpgradApplicationImpl upgrad=null;
+    private UpgradApplicationImpl(){}
+
+    public static UpgradApplicationImpl getInstance(){
+        if(upgrad==null){
+            upgrad=new UpgradApplicationImpl();
+        }
+        return upgrad;
+    }
+
     DataBase dataBase=DataBase.getInstance();
     Scanner scanner=new Scanner(System.in).useDelimiter("\n");
 
@@ -66,7 +73,14 @@ public class UpgradApplicationImpl implements UpgradApplication {
         }
         dataBase.displayAllQuestions();
         System.out.println("Please enter the question number to answer the question");
-        int questionId=scanner.nextInt();
+        int questionId=0;
+        try {
+             questionId = scanner.nextInt();
+        }catch (InputMismatchException e){
+            System.out.println("Invalid Input. Please provide a valid input");
+            scanner.next();
+            giveAnswer(user);
+        }
         System.out.println("Please enter the answer");
         String answer=scanner.next();
         if(questionId>dataBase.getAllQuestions().size()){
@@ -101,7 +115,14 @@ public class UpgradApplicationImpl implements UpgradApplication {
         }
         dataBase.displayAllQuestions();
         System.out.println("To upvote any Question please enter question Id OR enter 0 to return to HomePage");
-        int questionId=scanner.nextInt();
+        int questionId=0;
+        try{
+            questionId=scanner.nextInt();
+        }catch (InputMismatchException e){
+            System.out.println("Invalid Input. Please provide a valid input");
+            scanner.next();
+            viewAndUpvoteQuestion(user);
+        }
         if(questionId==0){
             return;
         }
@@ -132,7 +153,14 @@ public class UpgradApplicationImpl implements UpgradApplication {
         }
         dataBase.displayAllQuestions();
         System.out.println("Please enter the question number to view the answers");
-        int questionId=scanner.nextInt();
+        int questionId=0;
+        try{
+            questionId=scanner.nextInt();
+        }catch (InputMismatchException e){
+            System.out.println("Invalid Input. Please provide a valid input");
+            scanner.next();
+            viewAndUpvoteAnswer(user);
+        }
         if(questionId>dataBase.getAllQuestions().size()){
             System.out.println("Invalid question Id is selected");
             return;
@@ -148,7 +176,13 @@ public class UpgradApplicationImpl implements UpgradApplication {
             System.out.println((answerId++)+" . "+answer.getAnswer());
         }
         System.out.println("To upvote any Answer please enter answer Id OR enter 0 to return to HomePage");
-         answerId=scanner.nextInt();
+        try{
+            answerId=scanner.nextInt();
+        }catch (InputMismatchException e){
+            System.out.println("Invalid Input. Please provide a valid input");
+            scanner.next();
+            viewAndUpvoteAnswer(user);
+        }
         if(answerId<=0 || answerId>dataBase.getAllAnswers().get(question).size()){
             System.out.println("Invalid answer Id selected");
             return;
