@@ -17,3 +17,5 @@ project is designed using OOP concepts in Java
 3) dataBase package consists of 1 class DataBase. which contains all data of Q&A platform, It serves as DBMS.
 
 4) Application package consistes of 1 upgradApplication Interface and 1 upgradApplicationImpl and Welcome page and Home page classes. upgradApplication Interface      contains all functionalities to be performed in platform. such as Login,Register,Ask question, Give answers,Upvote question and answers.
+
+5) exception package is added for email validation and option entered validation
